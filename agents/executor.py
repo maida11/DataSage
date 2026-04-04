@@ -59,21 +59,29 @@ def executor_node(state: AgentState) -> AgentState:
 
     code = sanitize_code(state["code"])
 
-    with tempfile.NamedTemporaryFile(
-        mode='w', suffix='.py', delete=False, encoding='utf-8'
-    ) as f:
-        f.write(code)
-        tmp_path = f.name
-        tmp_filename = os.path.basename(tmp_path)
+    import uuid
+    import tempfile
 
-    # Resolve absolute paths for Docker volumes
-    code_dir = os.path.dirname(os.path.abspath(tmp_path))
     data_dir = os.path.join(BASE_DIR, "data")
     outputs_dir = os.path.join(BASE_DIR, "outputs")
+    sandbox_dir = os.path.join(BASE_DIR, "sandbox")
+    os.makedirs(sandbox_dir, exist_ok=True)
     os.makedirs(outputs_dir, exist_ok=True)
+
+    code_filename = f"code_{uuid.uuid4().hex[:8]}.py"
+    tmp_path = os.path.join(sandbox_dir, code_filename)
+
+    with open(tmp_path, 'w', encoding='utf-8') as f:
+        f.write(code)
+
+    tmp_filename = code_filename
+    code_dir = sandbox_dir
 
     print("DATA DIR:", data_dir)
     print("OUTPUTS DIR:", outputs_dir)
+    print("CODE FILE:", tmp_path)
+    print("CODE FILE EXISTS:", os.path.exists(tmp_path))
+    print("FILES IN DATA DIR:", os.listdir(data_dir))
 
     try:
         result = client.containers.run(
@@ -138,4 +146,5 @@ def executor_node(state: AgentState) -> AgentState:
         }
 
     finally:
-        os.unlink(tmp_path)
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)

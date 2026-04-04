@@ -8,18 +8,16 @@ sys.path.append(BASE_DIR)
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-
-load_dotenv(override=True)
-
 from main import run_pipeline
 from database import create_db, save_job, get_all_jobs
-
+from dotenv import load_dotenv
+load_dotenv(override=False)
 app = FastAPI(title="DataSage API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

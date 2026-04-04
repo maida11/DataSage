@@ -2,8 +2,8 @@ import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
-load_dotenv()
-
+load_dotenv(override=True)
+print("GROQ KEY LOADED:", os.getenv("GROQ_API_KEY"))
 architect_llm = ChatGroq(
     model="llama-3.3-70b-versatile",
     temperature=0,
