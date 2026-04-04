@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/upload_*.csv
+outputs/
+frontend/node_modules/
+frontend/dist/
+*.db
