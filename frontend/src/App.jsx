@@ -48,12 +48,11 @@ export default function App() {
   return (
     <div className="landing-page">
       {/* Floating Dark Navbar */}
-<nav className="navbar">
+      <nav className="navbar">
         <div className="nav-brand">DataSage</div>
         
         <div className="nav-actions">
           <ul className="nav-links">
-          {/* Label */}
           <li className="nav-label">Let's Connect:</li>
           <li className="nav-item-flex">
             <a href="https://github.com/maida11" target="_blank" rel="noopener noreferrer" className="social-link">
@@ -63,10 +62,7 @@ export default function App() {
               GitHub
             </a>
           </li>
-
-          {/* LinkedIn Link */}
           <li className="nav-item-flex">
-            {/* Make sure to put your actual LinkedIn URL in the href below! */}
             <a href="https://linkedin.com/in/maidashahzad11" target="_blank" rel="noopener noreferrer" className="social-link">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -74,7 +70,6 @@ export default function App() {
               LinkedIn
             </a>
           </li>
-
         </ul>
         </div>
       </nav>
@@ -97,7 +92,7 @@ export default function App() {
         </h1>
         
         <p className="hero-subtitle">
-          Upload your messy CSV, generate visulaizations, charts and a processed csv.
+          Upload your messy CSV, generate visualizations, charts and a processed csv.
         </p>
 
         {/* Call to Actions */}
@@ -108,11 +103,10 @@ export default function App() {
           >
             {file ? "Change Dataset" : "Upload Dataset"} →
           </button>
-          
         </div>
         <p className="microcopy">No credit card required</p>
 
-        {/* Input Bar (Acts as the file processor) */}
+        {/* Upload Bar */}
         <div className="action-bar-container">
           <input
             type="file"
@@ -134,6 +128,8 @@ export default function App() {
              </button>
           </div>
         </div>
+
+       
 
         {/* Loading & Error States */}
         {loading && <p className="status-text">Agents are analyzing your data. Come back after 5 mins.</p>}
@@ -162,12 +158,12 @@ export default function App() {
                 <div className="chart-grid">
                   {result.charts.map((chart, i) => (
                     <div key={i} className="chart-item">
-                    <img src={`${API}${chart}`} alt={chart} />
-                    <p className="chart-name">{chart.split("/").pop().replace(".png", "").replaceAll("_", " ")}</p>
-                    <button onClick={() => handleDownloadChart(chart)} className="btn-small">
-                      Download
-                    </button>
-                  </div>
+                      <img src={`${API}${chart}`} alt={chart} />
+                      <p className="chart-name">{chart.split("/").pop().replace(".png", "").replaceAll("_", " ")}</p>
+                      <button onClick={() => handleDownloadChart(chart)} className="btn-small">
+                        Download
+                      </button>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -175,6 +171,17 @@ export default function App() {
           </div>
         )}
       </main>
+       <div className="agent-section">
+          <h2 className="agent-title">Meet Your Autonomous Data Team</h2>
+          <p className="agent-subtitle">
+            Four specialized AI agents collaborate to plan, clean, execute, and self-correct your data analysis.
+          </p>
+          <img
+            src="/bgdrop.png"
+            alt="Multi-Agent System Architecture"
+            className="agent-image"
+          />
+        </div>
     </div>
   );
 }

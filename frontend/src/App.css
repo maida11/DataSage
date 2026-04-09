@@ -374,3 +374,62 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+.agent-section {
+  max-width: 1200px; /* Match the navbar */
+  margin: 4rem 0 0 0; /* 'auto' on left/right centers the section */
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0 1.5rem; /* Match the navbar horizontal padding so content lines up */
+}
+
+.agent-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.agent-subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.agent-image {
+  width: 1200px; /* Spans the full width of the 1200px container */
+  height: auto;
+  border-radius: 16px; /* Updated to match the "16px" from your previous code */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eaeaea;
+  display: flex;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.agent-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 4rem auto 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0 1.5rem;
+  /* Smooth transition for any child elements */
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect */
+.agent-section:hover .agent-image {
+  /* Lifts the image slightly */
+  transform: translateY(-10px) scale(1.01);
+  
+  /* Softens and expands the shadow for a "floating" feel */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  
+  /* Optional: Adds a subtle border highlight if your theme supports it */
+  border-color: var(--accent-color, #000000);
+}
+
+/* Optional: Slight fade for text to draw more eye to the image */
+.agent-section:hover .agent-subtitle {
+  color: var(--text-main);
+  transition: color 0.3s ease;
+}
