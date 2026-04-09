@@ -136,7 +136,7 @@ export default function App() {
         </div>
 
         {/* Loading & Error States */}
-        {loading && <p className="status-text">Agents are analyzing your data...</p>}
+        {loading && <p className="status-text">Agents are analyzing your data. Come back after 5 mins.</p>}
         {error && <p className="error-text">{error}</p>}
 
         {/* Results Area */}
