@@ -6,7 +6,35 @@ services:
     image: datasage-sandbox
     command: echo "Sandbox image built"
 
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: datasage
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234@db:5432/datasage
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./sandbox:/app/sandbox
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - db
+      - sandbox
 
   frontend:
     build:
