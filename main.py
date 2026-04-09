@@ -1,7 +1,4 @@
 import os
-
-import os
-key = os.getenv("GROQ_API_KEY")
 from graph.pipeline import build_graph
 
 def run_pipeline(csv_path: str):
