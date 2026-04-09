@@ -6,36 +6,39 @@ import os
 import glob
 from utils.state import AgentState
 import shutil
+import re
+import unicodedata
 
 client = docker.from_env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+import re
+import unicodedata
 
 def sanitize_code(code: str) -> str:
-    """Fix common LLM code generation issues"""
-    lines = []
-    for line in code.split('\n'):
-        stripped = line.rstrip()
+    # Strip BOM and normalize line endings
+    code = code.replace('\r\n', '\n').replace('\r', '\n').lstrip('\ufeff')
 
-        # Fix mixed quotes — opens with " closes with '
-        if 'f"' in stripped and stripped.endswith("')"):
-            line = stripped[:-2] + '")'
+    # Kill all non-ASCII characters (em dashes, curly quotes, etc.)
+    code = ''.join(
+        c if ord(c) < 128 else ' '
+        for c in code
+    )
 
-        # Fix mixed quotes — opens with ' closes with "
-        elif "f'" in stripped and stripped.endswith('")'):
-            line = stripped[:-2] + "')"
+    # Join broken savefig lines — catches LLM line-wrapping inside strings
+    code = re.sub(
+        r'plt\.savefig\(([^)]*)\n([^)]*)\)',
+        lambda m: f"plt.savefig({(m.group(1) + m.group(2)).strip()})",
+        code
+    )
 
-        # Fix unterminated print strings — line has print(" but no closing "
-        elif stripped.lstrip().startswith('print(') and stripped.count('"') % 2 != 0:
-            line = stripped + '")'
+    # Strip markdown fences if they survived the programmer node
+    if '```' in code:
+        code = re.sub(r'```(?:python)?\n?', '', code)
 
-        # Fix unterminated print strings with single quotes
-        elif stripped.lstrip().startswith('print(') and stripped.count("'") % 2 != 0:
-            line = stripped + "')"
+    return code
 
-        lines.append(line)
-    return '\n'.join(lines)
+    return code
 
 
 def executor_node(state: AgentState) -> AgentState:

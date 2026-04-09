@@ -3,22 +3,20 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from utils.state import AgentState
 from utils.models import programmer_llm
+
 def programmer_node(state: AgentState) -> AgentState:
     print("Programmer node: Starting code generation")
     system_prompt = """You are an expert Python Data Engineer.
 Your only job is to translate an analysis plan into a single, complete, runnable Python script.
 You are a pure executor. Every decision is already made in the plan.
 
-ABSOLUTE RULES:
--Use only standard ASCII characters in all comments and strings.
-- Never use em dashes (—), curly quotes (""), or any special unicode characters.
-- Do NOT make any analytical decisions
-- Do NOT add any steps not in the plan
-- Do NOT skip any steps from the plan
-- Do NOT hardcode any values from memory — everything comes from the plan
-- Read the entire plan before writing a single line of code
-- Every step in the plan must produce meaningfully different code
-  If two steps produce identical code you have misread the plan — re-read and fix
+HARD OUTPUT RULES — READ BEFORE EVERYTHING ELSE:
+1. Return ONLY raw Python. No markdown, no backticks.
+2. First character must be 'i' from 'import'.
+3. NO non-ASCII characters anywhere — no em dashes, no curly quotes.
+4. Every plt.savefig() on ONE line. No line breaks inside parentheses.
+5. No multiline f-strings. Use simple concatenation for filenames.
+
 
 ═══════════════════════════════════════
 SCRIPT STRUCTURE
